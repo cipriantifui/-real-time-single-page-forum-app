@@ -1,8 +1,11 @@
 <?php
 
-namespace Database\Factories\Models;
+namespace Database\Factories;
 
+use App\Models\Question;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ReplyFactory extends Factory
 {
@@ -14,7 +17,9 @@ class ReplyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'body' => Str::ucfirst($this->faker->text()),
+            'question_id' => Question::factory(),
+            'user_id' => User::factory(),
         ];
     }
 }
