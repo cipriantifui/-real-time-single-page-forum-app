@@ -20,7 +20,7 @@ class QuestionResource extends JsonResource
             'path' => $this->path,
             'category' => $this->category->name,
             'user' => $this->user->name,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->diffForHumans(),
         ];
     }
 }

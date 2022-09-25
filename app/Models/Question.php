@@ -45,4 +45,12 @@ class Question extends Model
     {
         return $this->hasMany(Reply::class);
     }
+
+    /**
+     * @return string
+     */
+    public function getPathAttribute()
+    {
+        return asset('api/question/'.$this->slug);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionStoreRequest;
 use App\Http\Requests\QuestionUpdateRequest;
+use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return Question::latest()->get();
+        return response()->json(QuestionResource::collection(Question::latest()->get()));
     }
 
     /**
@@ -37,7 +38,7 @@ class QuestionController extends Controller
         $question->body = $request->input('body');
         $question->save();
 
-        return response()->json($question, Response::HTTP_CREATED);
+        return response()->json(QuestionResource::make($question), Response::HTTP_CREATED);
     }
 
     /**
@@ -48,7 +49,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return response()->json($question);
+        return response()->json(QuestionResource::make($question));
     }
 
     /**
@@ -69,7 +70,7 @@ class QuestionController extends Controller
         }
         $question->save();
 
-        return response()->json($question);
+        return response()->json(QuestionResource::make($question));
     }
 
     /**
