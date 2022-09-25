@@ -18,7 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->foreignIdFor(\App\Models\User::class);
             $table->foreignIdFor(\App\Models\Category::class);
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->text('body');
             $table->softDeletes();
             $table->timestamps();

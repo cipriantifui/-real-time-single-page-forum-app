@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class QuestionUpdateRequest extends FormRequest
 {
@@ -24,7 +25,13 @@ class QuestionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'sometimes|string|min:10|max:255',
+            'title' => [
+                'sometimes',
+                'string',
+                Rule::unique('questions')->ignore($this->route('question')),
+                'min:5',
+                'max:255'
+            ],
             'body' => 'sometimes|string|min:10|max:2000',
         ];
     }

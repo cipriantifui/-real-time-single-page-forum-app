@@ -16,7 +16,7 @@ class QuestionFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->text(10);
+        $title = $this->faker->text(25);
         return [
             'title' => Str::ucfirst($title),
             'slug' => Str::slug($title),

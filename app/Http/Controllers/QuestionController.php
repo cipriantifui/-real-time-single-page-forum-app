@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Models\Question;
-use Illuminate\Http\Request;
+use App\Http\Requests\QuestionStoreRequest;
+use App\Http\Requests\QuestionUpdateRequest;
+use App\Models\Question;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class QuestionController extends Controller
 {
@@ -14,72 +17,70 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Question::latest()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param QuestionStoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(QuestionStoreRequest $request)
     {
-        //
+        $title = $request->input('title');
+        $question = new Question();
+        $question->user_id = 1;
+        $question->category_id = $request->input('category_id');
+        $question->title = $title;
+        $question->slug = Str::slug($title);
+        $question->body = $request->input('body');
+        $question->save();
+
+        return response()->json($question, Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Models\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param Question $question
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Question $question)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Models\Question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Question $question)
-    {
-        //
+        return response()->json($question);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Models\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param QuestionUpdateRequest $request
+     * @param Question $question
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Question $question)
+    public function update(QuestionUpdateRequest $request, Question $question)
     {
-        //
+        if($request->has('title')) {
+            $question->title = $request->input('title');
+            $question->slug = Str::slug($request->input('title'));
+        }
+        if($request->has('body')) {
+            $question->body = $request->input('body');
+        }
+        $question->save();
+
+        return response()->json($question);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Models\Question  $question
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return response()->json(['message' => 'success']);
     }
 }

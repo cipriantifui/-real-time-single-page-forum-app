@@ -25,8 +25,8 @@ class QuestionStoreRequest extends FormRequest
     {
         return [
             'category_id' => 'required|numeric|exists:categories,id',
-            'title' => 'required|string',
-            'body' => 'required|string|max:2000',
+            'title' => 'required|string|unique:questions|min:5|max:255',
+            'body' => 'required|string|min:10|max:2000',
         ];
     }
 }

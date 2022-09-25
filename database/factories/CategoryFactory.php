@@ -20,7 +20,7 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->word();
+        $name = $this->faker->text(20);
         return [
             'name' => Str::ucfirst($name) ,
             'slug' => Str::slug($name),
